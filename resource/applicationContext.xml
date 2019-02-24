@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop.xsd
+     http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+">
+
+    <!--导入hibernate相关配置-->
+    <import resource="hibernateApplication.xml"/>
+
+    <!--login -->
+    <bean id="loginAction" class="com.cfeng.web.LoginAction" scope="prototype">
+        <property name="loginService" ref="loginService"/>
+    </bean>
+    <bean id="loginService" class="com.cfeng.service.impl.LoginServiceImpl" >
+        <property name="userDao" ref="userDao"/>
+    </bean>
+    <bean id="userDao" class="com.cfeng.dao.impl.UserDaoImpl" >
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <!--category -->
+    <bean id="categoryAction" class="com.cfeng.web.CategoryAction" scope="prototype">
+        <property name="categoryService" ref="categoryService"/>
+    </bean>
+    <bean id="categoryService" class="com.cfeng.service.impl.CategoryServiceImpl">
+        <property name="categoryDao" ref="categoryDao"/>
+    </bean>
+    <bean id="categoryDao" class="com.cfeng.dao.impl.CategoryDaoImpl" >
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+
+    <!-- article -->
+    <bean id="articleAction" class="com.cfeng.web.ArticleAction" scope="prototype">
+        <property name="articleService" ref="articleService"/>
+        <property name="userServer" ref="userServer"/>
+    </bean>
+    <bean id="articleService" class="com.cfeng.service.impl.ArticleServiceImpl">
+        <property name="articleDao" ref="articleDao"/>
+    </bean>
+    <bean id="articleDao" class="com.cfeng.dao.impl.ArticleDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <!--web-->
+    <bean id="webAction" class="com.cfeng.web.WebAction" scope="prototype">
+        <property name="articleService" ref="articleService"/>
+        <property name="userServer" ref="userServer"/>
+    </bean>
+    <bean id="locationAction" class="com.cfeng.web.locationAction" scope="prototype"></bean>
+
+
+    <!--user-->
+    <bean id="userAction" class="com.cfeng.web.UserAction" scope="prototype">
+        <property name="userServer" ref="userServer"/>
+        <property name="loginService" ref="loginService"/>
+    </bean>
+    <bean id="userServer" class="com.cfeng.service.impl.UserServerImpl">
+        <property name="userDao" ref="userDao"/>
+    </bean>
+</beans>
